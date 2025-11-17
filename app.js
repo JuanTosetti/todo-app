@@ -51,6 +51,7 @@ function agregarTarea() {
 
 	renderizarTareas();
 	guardarEnLocalStorage();
+    actualizarStats();
 	showToast("Tarea agregada", 2000);
 }
 
@@ -64,6 +65,7 @@ function borrarTarea(index) {
 	tareas.splice(index, 1);
 	renderizarTareas();
 	guardarEnLocalStorage();
+    actualizarStats();
 	showToast("Tarea eliminada", 2000);
 }
 
@@ -72,6 +74,7 @@ function toggleCompletar(index) {
 	tareas[index].completada = !tareas[index].completada;
 	renderizarTareas();
 	guardarEnLocalStorage();
+    actualizarStats();
 	showToast("Tarea actualizada", 2000);
 }
 
@@ -86,6 +89,7 @@ function cargarDesdeLocalStorage() {
 		tareas = JSON.parse(data);
 		renderizarTareas();
 	}
+    actualizarStats();
 }
 
 /* TOASTS */
@@ -105,6 +109,25 @@ function showToast(mensaje, duracion = 3000) {
 		setTimeout(() => toast.remove(), 200);
 	}, duracion);
 }
+
+//Funcion stats
+function actualizarStats(){
+    const total = tareas.length;
+    const completadas = tareas.filter(t => t.completada).length;
+    const pendientes = total -completadas;
+
+    const elTotal = document.getElementById("total");
+    const elCompletada = document.getElementById("completadas");
+    const elPendientes = document.getElementById("pendientes");
+
+    //Controlar que existen en el DOM 
+    if(!elTotal || !elCompletada || elPendientes) return;
+
+    elTotal.textContent = total;
+    elCompletada.textContent = completadas;
+    elPendientes.textContent = pendientes;
+}
+
 
 //Init
 cargarDesdeLocalStorage();

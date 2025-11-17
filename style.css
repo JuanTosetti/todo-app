@@ -191,3 +191,13 @@ button:hover {
 	opacity: 1;
 	transform: translateY(0);
 }
+
+/* Stats */
+
+.stats {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+	opacity: .9;
+}
