@@ -1,60 +1,110 @@
 const input = document.getElementById("inputTarea");
-const btnAgregar = document.getElementById("btnAgregar");
 const lista = document.getElementById("listaTareas");
+const form = document.getElementById("formTarea");
 
 let tareas = [];
 
-//Funcion para renderizar tareas
-function renderizarTareas(){
-    lista.innerHTML = "";
+/*RENDERIZAR TAREAS*/
+function renderizarTareas() {
+	lista.innerHTML = "";
 
-    tareas.forEach((tarea, index) => {
-        const li = document.createElement("li");
-        li.textContent = tarea.texto;
+	tareas.forEach((tarea, index) => {
+		const li = document.createElement("li");
+		li.classList.add("tarea");
+		if (tarea.completada) li.classList.add("completada");
 
-        //boton borrar
-        const btnBorrar = document.createElement("button");
-        btnBorrar.textContent = "❌";
-        btnBorrar.style.marginLeft = "10px";
-        btnBorrar.onclick = () => borrarTarea(index);
+		const texto = document.createElement("span");
+		texto.classList.add("tarea-texto");
+		texto.textContent = tarea.texto;
 
-        li.appendChild(btnBorrar);
-        lista.appendChild(li);
-    });
+		/* Botón completar */
+		const btnCompletar = document.createElement("button");
+		btnCompletar.classList.add("btn-accion");
+		btnCompletar.innerHTML = tarea.completada
+			? `<i data-lucide="check"></i>`
+			: `<i data-lucide="circle"></i>`;
+		btnCompletar.onclick = () => toggleCompletar(index);
+
+		/* Botón borrar */
+		const btnBorrar = document.createElement("button");
+		btnBorrar.classList.add("btn-accion");
+		btnBorrar.innerHTML = `<i data-lucide="trash-2"></i>`;
+		btnBorrar.onclick = () => borrarTarea(index);
+
+		li.appendChild(texto);
+		li.appendChild(btnCompletar);
+		li.appendChild(btnBorrar);
+		lista.appendChild(li);
+	});
+
+	// IMPORTANTE: activar íconos al renderizar
+	lucide.createIcons();
 }
 
-//funcion agregar tarea
+/*AGREGAR TAREA*/
 function agregarTarea() {
-    const texto = input.value.trim();
+	const texto = input.value.trim();
+	if (!texto) return;
 
-    if (texto === "") return;
+	tareas.push({ texto, completada: false });
+	input.value = "";
 
-    tareas.push({ texto });
-    input.value = "";
-    renderizarTareas();
-    guardarEnLocalStorage();
+	renderizarTareas();
+	guardarEnLocalStorage();
+	showToast("Tarea agregada", 2000);
 }
 
-btnAgregar.addEventListener("click", agregarTarea);
+form.addEventListener("submit", e => {
+	e.preventDefault();
+	agregarTarea();
+});
 
-//funcion borrar tarea
-function borrarTarea(index){
-    tareas.splice(index,1);
-    renderizarTareas();
-    guardarEnLocalStorage();
+/*BORRAR TAREA*/
+function borrarTarea(index) {
+	tareas.splice(index, 1);
+	renderizarTareas();
+	guardarEnLocalStorage();
+	showToast("Tarea eliminada", 2000);
 }
 
-// Local Storage
+/*COMPLETAR TAREA*/
+function toggleCompletar(index) {
+	tareas[index].completada = !tareas[index].completada;
+	renderizarTareas();
+	guardarEnLocalStorage();
+	showToast("Tarea actualizada", 2000);
+}
+
+/* LOCAL STORAGE*/
 function guardarEnLocalStorage() {
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+	localStorage.setItem("tareas", JSON.stringify(tareas));
 }
 
 function cargarDesdeLocalStorage() {
-    const data = localStorage.getItem("tareas");
-    if (data) {
-        tareas = JSON.parse(data);
-        renderizarTareas();
-    }
+	const data = localStorage.getItem("tareas");
+	if (data) {
+		tareas = JSON.parse(data);
+		renderizarTareas();
+	}
 }
 
+/* TOASTS */
+function showToast(mensaje, duracion = 3000) {
+	const contenedor = document.getElementById("toast-container");
+
+	const toast = document.createElement("div");
+	toast.classList.add("toast");
+	toast.textContent = mensaje;
+
+	contenedor.appendChild(toast);
+
+	setTimeout(() => toast.classList.add("show"), 10);
+
+	setTimeout(() => {
+		toast.classList.remove("show");
+		setTimeout(() => toast.remove(), 200);
+	}, duracion);
+}
+
+//Init
 cargarDesdeLocalStorage();

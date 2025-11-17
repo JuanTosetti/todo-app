@@ -1,0 +1,218 @@
+/* ================================
+   TEMA FUTURISTA OSCURO – VARIABLES
+=================================== */
+:root {
+	--bg: #0a0a0f;
+	--surface: #11111a;
+	--surface-2: #171721;
+
+	--primary: #7f5af0;
+	--primary-glow: rgba(127, 90, 240, 0.55);
+
+	--text: #e6e6e9;
+	--text-dim: #a1a1ac;
+
+	--border: #262632;
+
+	--danger: #ff4f4f;
+	--success: #00ffa6;
+}
+
+/* ================================
+   RESET + BASE
+=================================== */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: var(--bg);
+	color: var(--text);
+	font-family: "Inter", sans-serif;
+	padding: 2rem;
+	display: flex;
+	justify-content: center;
+}
+
+/* ================================
+   LAYOUT PRINCIPAL
+=================================== */
+.container {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	padding: 2rem;
+	width: 100%;
+	max-width: 480px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.title {
+	text-align: center;
+	font-size: 1.8rem;
+	margin-bottom: 1.5rem;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+
+/* ================================
+   FORMULARIO
+=================================== */
+.form {
+	display: flex;
+	gap: 0.6rem;
+	margin-bottom: 1.6rem;
+}
+
+.form input {
+	flex: 1;
+	padding: 0.8rem 1rem;
+	border-radius: 10px;
+	border: 1px solid var(--border);
+	background: var(--surface-2);
+	color: var(--text);
+	font-size: 1rem;
+	transition: border-color .25s, box-shadow .25s;
+}
+
+.form input:focus {
+	border-color: var(--primary);
+	box-shadow: 0 0 10px var(--primary-glow);
+	outline: none;
+}
+
+.btn {
+	background: var(--primary);
+	color: white;
+	border: none;
+	padding: 0.8rem 1.2rem;
+	border-radius: 10px;
+	cursor: pointer;
+	font-weight: 600;
+	transition: transform .2s, box-shadow .3s, background .3s;
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 0 14px var(--primary-glow);
+}
+
+.btn:active {
+	transform: translateY(0);
+	box-shadow: 0 0 5px var(--primary-glow);
+}
+
+/* ================================
+   LISTA DE TAREAS
+=================================== */
+.lista {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+.tarea {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: var(--surface-2);
+	border: 1px solid var(--border);
+	padding: 0.9rem 1rem;
+	border-radius: 10px;
+	transition: border-color .25s, box-shadow .25s, background .3s;
+}
+
+.tarea:hover {
+	border-color: var(--primary);
+	box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.tarea-texto {
+	flex: 1;
+	font-size: 1rem;
+	color: var(--text);
+}
+
+.tarea.completada .tarea-texto {
+	text-decoration: line-through;
+	color: var(--text-dim);
+	opacity: 0.7;
+}
+
+.btn-accion {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--text-dim);
+	font-size: 1.1rem;
+	margin-left: 0.6rem;
+	transition: color .2s;
+}
+
+.btn-accion:hover {
+	color: var(--primary);
+}
+
+/* ================================
+   TOASTS
+=================================== */
+#toast-container {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	z-index: 9999;
+}
+
+.toast {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	padding: 0.9rem 1.2rem;
+	border-radius: 10px;
+	color: var(--text);
+	font-size: 0.95rem;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+	opacity: 0;
+	transform: translateY(-10px);
+	animation: toastIn .35s forwards;
+}
+
+.toast.success {
+	border-color: var(--success);
+	box-shadow: 0 0 12px rgba(0, 255, 166, 0.4);
+}
+
+.toast.error {
+	border-color: var(--danger);
+	box-shadow: 0 0 12px rgba(255, 79, 79, 0.4);
+}
+
+/* Animación */
+@keyframes toastIn {
+	from {
+		opacity: 0;
+		transform: translateY(-12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ICONOS */
+.icon {
+	width: 100px;
+	height: 20px;
+	color: var(--text-dim);
+	transition: color .2s;
+}
+
+.btn-accion:hover .icon {
+	color: var(--primary);
+}
+
