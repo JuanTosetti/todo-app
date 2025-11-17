@@ -114,15 +114,19 @@ function showToast(mensaje, duracion = 3000) {
 function actualizarStats(){
     const total = tareas.length;
     const completadas = tareas.filter(t => t.completada).length;
-    const pendientes = total -completadas;
+    const pendientes = total - completadas;
 
     const elTotal = document.getElementById("total");
     const elCompletada = document.getElementById("completadas");
     const elPendientes = document.getElementById("pendientes");
+    
 
-    //Controlar que existen en el DOM 
-    if(!elTotal || !elCompletada || elPendientes) return;
+    if(!elTotal || !elCompletada || !elPendientes){
+        return;
+    }
+   
 
+    
     elTotal.textContent = total;
     elCompletada.textContent = completadas;
     elPendientes.textContent = pendientes;
